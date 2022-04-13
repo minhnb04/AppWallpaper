@@ -39,6 +39,7 @@ const ImagesAsia = mongoose.model('images_asia',imagesSchema);
 const ImagesEuro = mongoose.model('images_euro',imagesSchema);
 const ImagesAmeria = mongoose.model('images_ameria',imagesSchema);
 
+//Asia
 router.get('/asia',async function (req, res) {
   console.log('asia')
   var imgs = await ImagesAsia.find({});
@@ -50,22 +51,22 @@ router.post('/addImgAsia',async function (req, res) {
   var date = req.body.date;
   var linkImg = req.body.linkImg;
 
+
   const images = new ImagesAsia({
     content: content,
     date: date,
     linkImg: linkImg,
   })
 
-  images.save(function (error) {
+  images.save(async function (error) {
     if (error) {
-      res.render('asia', {message: "Them KO thanh cong !!!! " + error.message})
+      res.render('asia', {title: 'Asia', message: "Them KO thanh cong !!!! " + error.message})
     } else {
-      res.render('asia', {message: "Them thanh cong!!!!"})
+      var imgs = await ImagesAsia.find({});
+      res.render('asia', {title: 'Asia', message: "Them thanh cong!!!!",data: imgs})
     }
   })
-
   var imgs = await ImagesAsia.find({});
-
   res.redirect('/asia');//load lại trang
   // res.render('asia',{title : 'Thêm ảnh',data: imgs});
 });
@@ -78,7 +79,7 @@ router.get('/deleteAsia', async function (req, res, next) {
 //chuyen sang tab updateImgAsia
 router.get('/updateAsia', async function (req, res, next) {
   var id = req.query.id;
-  res.render('updateImage', {id: id});
+  res.render('updateImage', {title:'asia',id: id});
 });
 //update ảnh
 router.post('/updateImgAsia',async function (req, res) {
@@ -95,11 +96,9 @@ router.post('/updateImgAsia',async function (req, res) {
     date: date_upd,
     linkImg: linkImg_upd,
   }
+  const filter = {_id: id_upd};
 
-  await ImagesAsia.findOneAndUpdate({_id: id_upd}, newimages, function (error) {
-    console.log(error)
-    res.redirect('/')
-  })
+  let doc = await ImagesAsia.findOneAndUpdate(filter, newimages);
 
   res.redirect('/asia');//load lại trang
 });
@@ -110,6 +109,7 @@ router.get('/viewAsia', async function (req, res, next) {
 
 
 
+//Euro
 router.get('/euro',async function (req, res) {
   console.log('euro')
   var imgs = await ImagesEuro.find({});
@@ -127,11 +127,12 @@ router.post('/addImgEuro',async function (req, res) {
     linkImg: linkImg,
   })
 
-  images.save(function (error) {
+  images.save(async function (error) {
     if (error) {
       res.render('euro', {message: "Them KO thanh cong !!!! " + error.message})
     } else {
-      res.render('euro', {message: "Them thanh cong!!!!"})
+      var imgs = await ImagesAmeria.find({});
+      res.render('euro', {message: "Them thanh cong!!!!", data: imgs})
     }
   })
 
@@ -145,6 +146,32 @@ router.get('/deleteEuro', async function (req, res, next) {
   await ImagesEuro.deleteOne({_id: req.query.id})
 
   res.redirect('/euro');
+});
+//chuyen sang tab updateImgEuro
+router.get('/updateEuro', async function (req, res, next) {
+  var id = req.query.id;
+  res.render('updateImage', {title:'euro',id: id});
+});
+//update ảnh
+router.post('/updateImgEuro',async function (req, res) {
+
+  var id_upd = req.body.id_upd;
+  var content_upd = req.body.content_upd;
+  var date_upd = req.body.date_upd;
+  var linkImg_upd = req.body.linkImg_upd;
+
+  console.log("ID: "+id_upd);
+
+  const newimages = {
+    content: content_upd,
+    date: date_upd,
+    linkImg: linkImg_upd,
+  }
+  const filter = {_id: id_upd};
+
+  let doc = await ImagesEuro.findOneAndUpdate(filter, newimages);
+
+  res.redirect('/euro');//load lại trang
 });
 router.get('/viewEuro', async function (req, res, next) {
   var imgeuro =  await ImagesEuro.find({_id: req.query.id})
@@ -170,11 +197,12 @@ router.post('/addImgAmerica',async function (req, res) {
     linkImg: linkImg,
   })
 
-  images.save(function (error) {
+  images.save(async function (error) {
     if (error) {
       res.render('america', {message: "Them KO thanh cong !!!! " + error.message})
     } else {
-      res.render('america', {message: "Them thanh cong!!!!"})
+      var imgs = await ImagesAsia.find({});
+      res.render('america', {message: "Them thanh cong!!!!",data: imgs})
     }
   })
 
@@ -189,10 +217,40 @@ router.get('/deleteAmerica', async function (req, res, next) {
 
   res.redirect('/america');
 });
+//chuyen sang tab updateImgAmerica
+router.get('/updateAmerica', async function (req, res, next) {
+  var id = req.query.id;
+  res.render('updateImage', {title:'america',id: id});
+});
+//update ảnh
+router.post('/updateImgAmerica',async function (req, res) {
+
+  var id_upd = req.body.id_upd;
+  var content_upd = req.body.content_upd;
+  var date_upd = req.body.date_upd;
+  var linkImg_upd = req.body.linkImg_upd;
+
+  console.log("ID: "+id_upd);
+
+  const newimages = {
+    content: content_upd,
+    date: date_upd,
+    linkImg: linkImg_upd,
+  }
+  const filter = {_id: id_upd};
+
+  let doc = await ImagesAmeria.findOneAndUpdate(filter, newimages);
+
+  res.redirect('/america');//load lại trang
+});
 router.get('/viewAmerica', async function (req, res, next) {
   var imgamerica =  await ImagesAmeria.find({_id: req.query.id})
   res.render('viewImg',{data : (imgamerica[0])})
 });
+
+
+
+
 
 router.get('/about',function (req,res) {
   console.log('About')
@@ -238,7 +296,5 @@ router.post('/delete',function (req,res){
     }
   });
 });
-
-
 
 module.exports = router;
