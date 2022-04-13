@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%include css%>
+    <title>Wallpaper HD</title>
+</head>
+<body class="container">
+<%include nav%>
+<h1>Update</h1>
+<form method="post" action="/updateImgAsia" enctype="application/x-www-form-urlencoded" style="text-align: right;padding: 5px;margin: 10px">
+    <h2> id : <%= id %></h2>
+    <input name="id_upd" value="<%= id %>" hidden>
+
+    <input name="content_upd" placeholder="Nhap noi dung anh:">
+
+    <input name="date_upd" placeholder="Nhap date:">
+
+    <input name="linkImg_upd" placeholder="Nhap link anh:">
+
+    <button type="submit">Add</button>
+
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>
